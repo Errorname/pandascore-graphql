@@ -1,0 +1,27 @@
+{
+  "name": "pandascore-graphql",
+  "version": "1.0.0",
+  "description": "Proof-of-Concept of a GraphQL wrapper of the PandaScore Esports API",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd functions && npm run build -- -w",
+    "start": "firebase emulators:start",
+    "deploy": "firebase deploy"
+  },
+  "author": "Thibaud Courtoison",
+  "license": "MIT",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Errorname/pandascore-graphql.git"
+  },
+  "keywords": [
+    "PandaScore",
+    "Esport",
+    "Graphql"
+  ],
+  "bugs": {
+    "url": "https://github.com/Errorname/pandascore-graphql/issues"
+  },
+  "homepage": "https://github.com/Errorname/pandascore-graphql#readme"
+}
