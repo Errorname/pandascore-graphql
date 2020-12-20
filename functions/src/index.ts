@@ -8,6 +8,7 @@ import { buildSchema } from 'type-graphql'
 
 import { getEndpointsCalled } from './api'
 import { resolvers } from './types'
+import { Context } from './context'
 
 export const graphql = functions.region('europe-west1').https.onRequest(async (...args) => {
   const schema = await buildSchema({
@@ -25,14 +26,15 @@ export const graphql = functions.region('europe-west1').https.onRequest(async (.
     context: ({ req }) => ({
       req,
       pandaScoreKey: req.headers['pandascore-key'],
+      cache: {},
     }),
-    formatResponse: (response, { operationName, request }) => {
+    formatResponse: (response, { operationName, request, context }) => {
       const showLogs =
         !request.http?.headers.get('show-logs') || request.http?.headers.get('show-logs') === 'true'
 
       if (operationName === 'IntrospectionQuery' || !showLogs) return { ...response }
 
-      const endpoints = getEndpointsCalled()
+      const endpoints = getEndpointsCalled(context as Context)
 
       return {
         ...response,

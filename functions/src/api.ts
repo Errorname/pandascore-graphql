@@ -30,10 +30,6 @@ const serializeParams = (params: any) => {
     .join('&')
 }
 
-const cache: {
-  [url: string]: any
-} = {}
-
 export const fetch = (ctx: Context) => (path: string, params: ArgsDictionary = {}) => {
   const url = new URL(path, 'https://api.pandascore.co').href
 
@@ -41,13 +37,13 @@ export const fetch = (ctx: Context) => (path: string, params: ArgsDictionary = {
 
   const urlWithParams = `${url}${serializedParams ? '?' + serializedParams : ''}`
 
-  if (cache[urlWithParams]) {
-    return cache[urlWithParams]
+  if (ctx.cache[urlWithParams]) {
+    return ctx.cache[urlWithParams]
   }
 
   console.log(`Fetch: ${urlWithParams}`)
 
-  cache[urlWithParams] = nodeFetch(urlWithParams, {
+  ctx.cache[urlWithParams] = nodeFetch(urlWithParams, {
     headers: {
       Authorization: `Bearer ${ctx.pandaScoreKey}`,
     },
@@ -60,9 +56,9 @@ export const fetch = (ctx: Context) => (path: string, params: ArgsDictionary = {
       return data
     })
 
-  return cache[urlWithParams]
+  return ctx.cache[urlWithParams]
 }
 
-export const getEndpointsCalled = () => {
-  return Object.keys(cache)
+export const getEndpointsCalled = (ctx: Context) => {
+  return Object.keys(ctx.cache)
 }
